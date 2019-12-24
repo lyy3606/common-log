@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="calculator" class="service.CalculatorImpl"/>
+    <bean id="lentil" class="aop.LogUtil"/>
+
+    <aop:config>
+        <!-- 创建一个切面Aspect引用了bean "logutil" -->
+        <aop:aspect ref="lentil">
+            <aop:pointcut id="log" expression="execution(* service.CalculatorImpl.*(..))"/>
+            <!-- 当执行到切入点时，会在执行切入点之前调用bean "logutil"中"print"函数 -->
+<!--            相当于advice-->
+            <aop:before method="print" pointcut-ref="log"/>
+            <aop:after method="print" pointcut-ref="log"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
